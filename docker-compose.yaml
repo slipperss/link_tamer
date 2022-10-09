@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  link_tamer_web:
+    restart: always
+    build: ./
+    container_name: link_tamer
+    command: bash entrypoint.sh
+    volumes:
+      - .:/usr/src/app/
+      - ./static:/usr/src/app/static
+    ports:
+      - 8000:8000
+    depends_on:
+      - link_tamer_db
+    env_file:
+      - ./.env
+
+  link_tamer_db:
+    image: postgres
+    container_name: link_tamer_db
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env
+
+volumes:
+  pg_data:
